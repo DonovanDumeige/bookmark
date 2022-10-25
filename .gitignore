@@ -4,6 +4,7 @@
 
 #Environnement
 /.env
+/.env.test
 
 # Logs
 logs
