@@ -6,7 +6,8 @@ import { Test } from '@nestjs/testing';
 import * as pactum from 'pactum';
 import { PrismaService } from '../src/prisma/prisma.service';
 import { AppModule } from '../src/app.module';
-import { AuthDto } from 'src/auth/dto';
+import { AuthDto } from '../src/auth/dto';
+import { EditUserDto } from '../src/user/dto';
 
 describe('App e2e', () => {
   let app: INestApplication;
@@ -132,12 +133,27 @@ describe('App e2e', () => {
             Authorization:
               'Bearer $S{userAccessToken}',
           })
-          .expectStatus(200)
-          .inspect();
+          .expectStatus(200);
       });
     });
 
-    describe('EditUser', () => {});
+    describe('EditUser', () => {
+      it('should edit user', () => {
+        const dto: EditUserDto = {
+          firstName: 'Vladimir',
+          email: 'vlad@codewithvlad.com',
+        };
+        return pactum
+          .spec()
+          .patch('/users')
+          .withHeaders({
+            Authorization:
+              'Bearer $S{userAccessToken}',
+          })
+          .withBody(dto)
+          .expectStatus(200);
+      });
+    });
   });
 
   describe('Bookmarks', () => {
